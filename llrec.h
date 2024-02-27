@@ -83,7 +83,23 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
+	
 
+	// base case: traversed to end of list
+	if (head == nullptr) {
+		return nullptr;
+	}
+
+	// recursive call: traverses to next node
+	head -> next = llfilter(head -> next, pred);
+
+	// returns next node/skips node if Comp's operator() returns true
+	if (pred(head -> val)) {
+		return head -> next;
+	}
+	else {
+		return head;
+	}
 
 }
 
