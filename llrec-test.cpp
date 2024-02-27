@@ -67,8 +67,14 @@ void dealloc(Node* head)
 //   function object struct declarations
 // -----------------------------------------------
 
-
-
+struct isOdd {
+	bool operator()(int val) {
+		if (val % 2 == 1) {
+			return true;
+		}
+		return false;
+	}
+};
 
 
 int main(int argc, char* argv[])
@@ -94,10 +100,29 @@ int main(int argc, char* argv[])
 		llpivot(head, smaller, larger, pivot);
 
     cout << "Pivoted list: " << endl;
-		cout << "\tSmaller:\n\t";
+		cout << "\tSmaller: ";
     print(smaller);
-		cout << "\L:\n\t";
+		cout << "\tLarger: ";
+    print(larger);
+
+		isOdd pred;
+		Node* evenSmaller = llfilter(smaller, pred);
+		cout << "Filtered list: ";
+		print(evenSmaller);
+
+
+		Node* empty = nullptr;
+		llpivot(empty, smaller, larger, pivot);
+
+    cout << "\nEmpty pivoted list: " << endl;
+		cout << "\tSmaller: ";
     print(smaller);
+		cout << "\tLarger: ";
+    print(larger);
+
+		Node* evenEmpty = llfilter(empty, pred);
+		cout << "Empty filtered list: ";
+		print(evenEmpty);
 
     return 0;
 
