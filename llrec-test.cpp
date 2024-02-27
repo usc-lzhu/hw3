@@ -68,7 +68,7 @@ void dealloc(Node* head)
 // -----------------------------------------------
 
 struct isOdd {
-	bool operator()(int val) {
+	bool operator()(int val) const{
 		if (val % 2 == 1) {
 			return true;
 		}
