@@ -1,7 +1,11 @@
 #ifndef HEAP_H
 #define HEAP_H
 #include <functional>
+#include <vector>
 #include <stdexcept>
+
+#include <iostream>
+using namespace std;
 
 template <typename T, typename PComparator = std::less<T> >
 class Heap
@@ -62,18 +66,65 @@ public:
 private:
   /// Add whatever helper functions and data members you need below
 
-
-
+  int m;  // m-ary tree
+  std::vector<T> data;
+  PComparator comp;
 
 };
 
 // Add implementation of member functions here
 
+template <typename T, typename PComparator>
+Heap<T, PComparator>::Heap(int m, PComparator c) :
+  m(m), comp(c) { }
+
+template <typename T, typename PComparator>
+Heap<T, PComparator>::~Heap() { }
+
+template <typename T, typename PComparator>
+void Heap<T, PComparator>::push(const T& item) {
+  // adds new item to end of vector
+  data.push_back(item);
+  std::size_t index = size() - 1;
+
+  // traverse up the tree
+  while (index != 0) {
+    std::size_t parentIndex = (index - 1) / m;
+    T& current = data[index];
+    T& parent = data[parentIndex];
+
+    // stop loop is current node is "worst" than parent
+    if (!comp(current, parent)) {
+        break;
+    }
+    
+    // swap current and parent node if current is "better"
+    std::swap(current, parent);
+
+    // update index
+    index = parentIndex;
+  } 
+}
+
+template <typename T, typename PComparator>
+bool Heap<T, PComparator>::empty() const {
+  // checks if data size is 0
+  if (size() == 0) {
+    return true;
+  }
+  return false;
+}
+
+template <typename T, typename PComparator>
+size_t Heap<T, PComparator>::size() const {
+  // return size of data
+  return data.size();
+}
 
 // We will start top() for you to handle the case of 
 // calling top on an empty heap
 template <typename T, typename PComparator>
-T const & Heap<T,PComparator>::top() const
+T const & Heap<T, PComparator>::top() const
 {
   // Here we use exceptions to handle the case of trying
   // to access the top element of an empty heap
@@ -81,34 +132,75 @@ T const & Heap<T,PComparator>::top() const
     // ================================
     // throw the appropriate exception
     // ================================
-
-
+    throw std::underflow_error("top: underflow error");
   }
   // If we get here we know the heap has at least 1 item
   // Add code to return the top element
 
-
-
+  // return best node
+  return data[0];
 }
 
 
 // We will start pop() for you to handle the case of 
 // calling top on an empty heap
 template <typename T, typename PComparator>
-void Heap<T,PComparator>::pop()
+void Heap<T, PComparator>::pop()
 {
+	// cout << "\npop function --------------------" << endl;
   if(empty()){
     // ================================
     // throw the appropriate exception
     // ================================
-
-
+    throw std::underflow_error("pop: underflow error");
   }
 
+	// cout << "initial data[0]: " << data[0] << endl;
 
+  // swap best and worst node and pop previous best node
+  std::swap(data[0], data[size() - 1]);
+	// cout << "swapped data[0]: " << data[0] << endl;
+
+  data.pop_back();
+
+  std::size_t index = 0;
+  size_t bestChildIndex = -1;
+  size_t childIndex = -1;
+
+  // traverse down the tree
+	// int i = 0;
+  while (m * index + 1 < size()) {
+    // find "best" child node
+    bestChildIndex = m * index + 1;
+    for(int i = 1; i <= m; i++) {
+      childIndex = m * index + i;
+      if (childIndex < size() && comp(data[childIndex], data[bestChildIndex])) {
+        bestChildIndex = childIndex;
+      }
+    }
+
+    // swap current and child node if child is better than parent
+    T& current = data[index];
+    T& bestChild = data[bestChildIndex];
+
+		// cout << "node: " << index << " ------" << endl;
+		// cout << "initial current: " << current << endl;
+		// cout << "initial bestChild: " << bestChild << endl;
+
+    if (comp(bestChild, current)) {
+			// cout << "swapped!" << endl;
+      std::swap(current, bestChild);
+      index = bestChildIndex;
+    }
+		else {
+			break;
+		}
+		
+  }
+
+	// cout << "pop function --------------------\n" << endl;
 
 }
-
 
 
 #endif
