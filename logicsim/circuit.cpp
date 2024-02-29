@@ -89,6 +89,14 @@ bool Circuit::parse(const char* fname)
                 std::stringstream ss(t_line);
                 std::string s_type;
                 getline(ss, s_type, ',');
+                if(s_type == "NOT")
+                {
+                    std::string s_in;
+                    getline(ss, s_in, ',');
+                    std::string s_output;
+                    getline(ss, s_output, ',');
+                    m_gates.push_back(new NotGate(m_wires[stoi(s_in)], m_wires[stoi(s_output)]));
+                }
                 if(s_type == "AND2")
                 {
                     std::string s_in1;

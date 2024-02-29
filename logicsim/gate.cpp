@@ -30,8 +30,8 @@ And2Gate::And2Gate(Wire* a, Wire* b, Wire* o) : Gate(2,o)
 Event* And2Gate::update(uint64_t current_time)
 {
     
-  char state = '1';
-  Event* e = nullptr;
+	char state = '1';
+	Event* e = nullptr;
 	for(auto w : m_inputs)
 	{
 		char in = w->getState();
@@ -45,14 +45,14 @@ Event* And2Gate::update(uint64_t current_time)
 			state = 'X';
 		}
 	}
-    if(state != m_current_state)
+	if(state != m_current_state)
 	{
-    m_current_state = state;
-    uint64_t next = current_time + m_delay;
+		m_current_state = state;
+		uint64_t next = current_time + m_delay;
 		e = new Event {next,m_output,state};
-         
+			
 	}
-    return e;
+	return e;
 }
 
 Or2Gate::Or2Gate(Wire* a, Wire* b, Wire* o) : Gate(2,o)
@@ -64,8 +64,8 @@ Or2Gate::Or2Gate(Wire* a, Wire* b, Wire* o) : Gate(2,o)
 Event* Or2Gate::update(uint64_t current_time)
 {
     
-  char state = '0';
-  Event* e = nullptr;
+	char state = '0';
+	Event* e = nullptr;
 	for(auto w : m_inputs)
 	{
 		char in = w->getState();
@@ -79,12 +79,42 @@ Event* Or2Gate::update(uint64_t current_time)
 			state = 'X';
 		}
 	}
-  if(state != m_current_state)
+ 	if(state != m_current_state)
 	{
-    m_current_state = state;
+    	m_current_state = state;
 		uint64_t next = current_time + m_delay;
 		e = new Event {next,m_output,state};
          
 	}
+  return e;
+}
+
+NotGate::NotGate(Wire* a, Wire* o) : Gate(1,o)
+{
+    wireInput(0,a);
+}
+
+Event* NotGate::update(uint64_t current_time)
+{
+	// default state is undefinied
+	char state = 'X';
+	Event* e = nullptr;
+
+	// invert state if defined
+	if (m_inputs[0] -> getState() == '0') {
+		state = '1';
+	}
+	else if (m_inputs[0] -> getState() == '1') {
+		state = '0';
+	}
+
+	// create new event with new time if state was inverted
+ 	if(state != m_current_state)
+	{
+    	m_current_state = state;
+		uint64_t next = current_time + m_delay;
+		e = new Event {next,m_output,state};
+	}
+
   return e;
 }
