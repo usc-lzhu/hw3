@@ -95,7 +95,9 @@ Node* llfilter(Node* head, Comp pred)
 
 	// returns next node/skips node if Comp's operator() returns true
 	if (pred(head -> val)) {
-		return head -> next;
+		Node* next = head -> next;
+		delete head;
+		return next;
 	}
 	else {
 		return head;
