@@ -89,13 +89,14 @@ Event* Or2Gate::update(uint64_t current_time)
   return e;
 }
 
-NotGate::NotGate(Wire* a, Wire* o) : Gate(1,o)
-{
-    wireInput(0,a);
+NotGate::NotGate(Wire* a, Wire* o) : 
+	// initializer list to call parent constructor
+	Gate(1,o) {
+	// adds input wire to wire vector
+    wireInput(0, a);
 }
 
-Event* NotGate::update(uint64_t current_time)
-{
+Event* NotGate::update(uint64_t current_time) {
 	// default state is undefinied
 	char state = 'X';
 	Event* e = nullptr;

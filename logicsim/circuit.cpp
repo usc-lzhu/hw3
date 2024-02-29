@@ -89,12 +89,16 @@ bool Circuit::parse(const char* fname)
                 std::stringstream ss(t_line);
                 std::string s_type;
                 getline(ss, s_type, ',');
+                // check if line has NOT tag
                 if(s_type == "NOT")
                 {
+                    // read in input wire state
                     std::string s_in;
                     getline(ss, s_in, ',');
+                    // read in output wire state
                     std::string s_output;
                     getline(ss, s_output, ',');
+                    // add new NOT gate onto gate vector 
                     m_gates.push_back(new NotGate(m_wires[stoi(s_in)], m_wires[stoi(s_output)]));
                 }
                 if(s_type == "AND2")

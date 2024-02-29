@@ -35,6 +35,7 @@ class Or2Gate : public Gate
       Event* update(uint64_t);
 };
 
+// not gate class extending gate class
 class NotGate : public Gate
 {
   public:

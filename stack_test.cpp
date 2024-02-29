@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 	// cout << "\npop underflow error" << endl;
 	// stack.pop();
 
-	cout << "\ntop underflow error" << endl;
-	cout << "top: " << stack.top() << endl;
+	// cout << "\ntop underflow error" << endl;
+	// cout << "top: " << stack.top() << endl;
 
 }

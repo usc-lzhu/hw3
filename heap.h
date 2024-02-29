@@ -4,9 +4,6 @@
 #include <vector>
 #include <stdexcept>
 
-#include <iostream>
-using namespace std;
-
 template <typename T, typename PComparator = std::less<T> >
 class Heap
 {
@@ -147,7 +144,6 @@ T const & Heap<T, PComparator>::top() const
 template <typename T, typename PComparator>
 void Heap<T, PComparator>::pop()
 {
-	// cout << "\npop function --------------------" << endl;
   if(empty()){
     // ================================
     // throw the appropriate exception
@@ -155,11 +151,8 @@ void Heap<T, PComparator>::pop()
     throw std::underflow_error("pop: underflow error");
   }
 
-	// cout << "initial data[0]: " << data[0] << endl;
-
   // swap best and worst node and pop previous best node
   std::swap(data[0], data[size() - 1]);
-	// cout << "swapped data[0]: " << data[0] << endl;
 
   data.pop_back();
 
@@ -168,7 +161,6 @@ void Heap<T, PComparator>::pop()
   size_t childIndex = -1;
 
   // traverse down the tree
-	// int i = 0;
   while (m * index + 1 < size()) {
     // find "best" child node
     bestChildIndex = m * index + 1;
@@ -183,12 +175,7 @@ void Heap<T, PComparator>::pop()
     T& current = data[index];
     T& bestChild = data[bestChildIndex];
 
-		// cout << "node: " << index << " ------" << endl;
-		// cout << "initial current: " << current << endl;
-		// cout << "initial bestChild: " << bestChild << endl;
-
     if (comp(bestChild, current)) {
-			// cout << "swapped!" << endl;
       std::swap(current, bestChild);
       index = bestChildIndex;
     }
@@ -197,9 +184,6 @@ void Heap<T, PComparator>::pop()
 		}
 		
   }
-
-	// cout << "pop function --------------------\n" << endl;
-
 }
 
 
